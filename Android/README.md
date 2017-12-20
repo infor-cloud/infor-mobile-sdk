@@ -11,9 +11,7 @@ inforauthentication is build for Android native applications. This will be usefu
 
 ## Dependency
 
-Configuration:
-
-## 1.  Add the below lines in your manifest.xml under your launcher activity tag.
+###### 1.  Add the below lines in your manifest.xml under your launcher activity tag.
 
 ```
 <intent-filter>
@@ -24,7 +22,7 @@ Configuration:
 </intent-filter>
 ```
 
-## 2. Copy "inforauthentication.aar" file to your libs directory and paste the following lines of code in your build.gradle(project  level).
+###### 2. Copy "inforauthentication.aar" file to your libs directory and paste the following lines of code in your build.gradle(project  level).
 
 ```
 allprojects {
@@ -62,7 +60,7 @@ repositories {
 ```
 
 
-## 3. Configuring AuthenticationManager (must configure before you intiateAuthentication call).
+###### 3. Configuring AuthenticationManager (must configure before you intiateAuthentication call).
 
 ```
 
@@ -97,13 +95,13 @@ AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).
 
 //Note that this property should be configured before calling initiateAuthentication method. if you set it after session created, library won't consider the property value and use the same value you configured(false if didn't configured) before you fire initiateAuthentication method.
 
-## 4. Start authentication using below.
+###### 4. Start authentication using below.
 ```
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).initiateAuthentication(this, this); 
 ```
 // You should only pass Activity's or Fragment's Context, not application Context. 
 
-## 5. Implement interface and callback methods (implements AuthenticationListener):
+###### 5. Implement interface and callback methods (implements AuthenticationListener):
 ```
 @Override
 public void onAuthenticationCompletedSuccessfully(Context context, String accessToken, String refreshToken, String expiresIn) {
@@ -125,7 +123,7 @@ public void onAuthenticationCancelled(Context context, String errorMessage) {
 	// cancelled authentication with error message.
 }
 ```
-## 6. Use refresh token method sto fetch new access token from refresh token
+###### 6. Use refresh token method sto fetch new access token from refresh token
 ```
 //You need to pass the refreshToken that has been saved.
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).requestForNewTokenFromRefreshToken(getApplicationContext(), oldRefreshToken, this);
@@ -159,13 +157,13 @@ AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).
 
 //onCreate() or onNewIntent() Methods will be called once the app is redirected from the external browser if privateModeAuthentication is disabled. The relevant data comes to these methods in a scheme where you need to get the values and pass the code to InforAuthenticaion in order to get accessToken & refreshToken. 
 
-## 7. Logging out from session
+###### 7. Logging out from session
 //You need to pass the refreshToken that has been saved.
 ```
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).logoutFromCurrentSession(getApplicationContext(), refreshToken, this);
 ```
 
-8. Implement interface and callback methods (implements AuthenticationLogoutListener):
+###### 8. Implement interface and callback methods (implements AuthenticationLogoutListener):
 ```
 @Override
 public void onLogoutSuccessfully(Context context) {
@@ -182,13 +180,13 @@ public void onLogoutFailedWithError(Context context, String errorMessage) {
 
 One user data will be save for one server (with ev reference). You wont be allowed to save one user details of second tenant if SSODataManager already have user details for same server with different tenant. Irrespective of tenants, one user details per one server.
 
-## 1. Configure SSODataManager and set the interface
+###### 1. Configure SSODataManager and set the interface
 ```
 SSODataManager.getSSODataManagerInstance(getApplicationContext());
 SSODataManager.getSSODataManagerInstance(getApplicationContext()).setSSODataListener(this);
 ```
 
-## 2. Adding user details to SSODataManager. You need to call this method once you complete authentication and have user details ready to save. Make you sure save correct data as other apps will effect these changes. If you're unable to save, please check the errorMessage in the callback method.
+###### 2. Adding user details to SSODataManager. You need to call this method once you complete authentication and have user details ready to save. Make you sure save correct data as other apps will effect these changes. If you're unable to save, please check the errorMessage in the callback method.
 
 ```
 SSODataManager.getSSODataManagerInstance(getApplicationContext()).addUserDataForServer(getApplicationContext(), environmentVariable, tenantId, userName, userBitmap, this);
@@ -225,13 +223,13 @@ How do you get the user name & profile pic for the currently logged in user:
                 User Picture: Mingle/SocialService.Svc/User/{USER_GUID}/ProfilePhoto?thumbnailType=0
                 You can get USER_GUID in user details response. Both requests needs header “Authorization” = “Bearer <your_token>.
 
-## 3. Updating user details
+###### 3. Updating user details
 
 ```
 SSODataManager.getSSODataManagerInstance(getApplicationContext()).updateUserDataForServer(getApplicationContext(), environmentVariable, userName, mUserBitmap);
 ```
 
-## 4. Fetching user details for one server
+###### 4. Fetching user details for one server
 
 ```
 SSODataManager.getSSODataManagerInstance(getApplicationContext()).getUserDetailsForServer(getApplicationContext(), environmentVariable); 
@@ -267,7 +265,7 @@ public Bitmap getBitmapFromString(String encodedString) {
 }
 ```
 
-## 5. Checking SSO user data availability for sever
+###### 5. Checking SSO user data availability for sever
 
 ```
 SSODataManager.getSSODataManagerInstance(getApplicationContext()).checkUserDataAvailabilityForServe(getApplicationContext(), environmentVariable, tenantId);
@@ -283,7 +281,7 @@ if (SSODataManager.getSSODataManagerInstance(getApplicationContext()).checkUserD
 }
 ```
 
-## 6. Removing user data from SSODataManager.        
+###### 6. Removing user data from SSODataManager.        
 
 ```
 SSODataManager.getSSODataManagerInstance(getApplicationContext()).removeUserData(getApplicationContext(), environmentVariable, this);
