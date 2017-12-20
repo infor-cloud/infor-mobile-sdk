@@ -99,7 +99,7 @@ AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).
 ```
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).initiateAuthentication(this, this); 
 ```
-// You should only pass Activity's or Fragment's Context, not application Context. 
+
 
 ###### 5. Implement interface and callback methods (implements AuthenticationListener):
 ```
