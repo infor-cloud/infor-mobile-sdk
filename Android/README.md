@@ -1,10 +1,3 @@
-Supported On:
-IDE :  Eclipse /Android Studio 
-Android Version : 4.3 or later.
-
-InforAuhtentication Android SDK versions:
-
-
 
 ## InforAuthentication
 inforauthentication is build for Android native applications. This will be useful to authentice using OAuth 2.0 for Infor ION API access.InforAuhtentication.aar
