@@ -63,13 +63,18 @@ repositories {
 
 3. Configuring AuthenticationManager (must configure before you intiateAuthentication call).
 
+```
 
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).configureAuthenticationManager(getApplicationContext(), qrCodeInformation); 
 
-																			(or)
+```
 
+																			(or)
+																			
+```
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).configureAuthenticationManager(getApplicationContext(), hostUrl, clientId, redirectUrl, tenantId, scope, clientSecret);
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).setAuthorizationEndPoints(getApplicationContext(), tokenEndPoint, authEndPoint, revokeEndPoint);
+```
 
 scope can be empy or nil. example scopes are "openid profile" ,"profile".
 Parameters mapping QR code data:
@@ -118,13 +123,14 @@ public void onAuthenticationCancelled(Context context, String errorMessage) {
 }
 
 6. Use refresh token method sto fetch new access token from refresh token
+```
 //You need to pass the refreshToken that has been saved.
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).requestForNewTokenFromRefreshToken(getApplicationContext(), oldRefreshToken, this);
-
+```
 
 and the folllowing methods will be called appropriately.
 
-
+```
 @Override
 public void onAuthenticationCompletedSuccessfully(Context context, String accessToken, String refreshToken, String expiresIn) {
  // Save accessToken & refreshToken and use for API Calls
@@ -144,7 +150,7 @@ public void onAuthenticationCancelled(Context context) {
 public void onAuthenticationCancelled(Context context, String errorMessage) {
  // cancelled authentication with error message.
 }
-
+```
 
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).getAccessTokenFromCode(getApplicationContext(), codeYourecieveFromBrwowser, this);
 
