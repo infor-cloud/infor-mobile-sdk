@@ -95,7 +95,7 @@ AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).
 
 //Note that this property should be configured before calling initiateAuthentication method. if you set it after session created, library won't consider the property value and use the same value you configured(false if didn't configured) before you fire initiateAuthentication method.
 
-## 4. Start authentication using below.
+###### 4. Start authentication using below.
 ```
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).initiateAuthentication(this, this); 
 ```
