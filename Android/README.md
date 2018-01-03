@@ -38,7 +38,7 @@ allprojects {
 b) add the following lines of code in your build.gradle(module level).
 
 ```
-compile 'com.infor.mobile:infor-authentication:0.1.5'
+compile 'com.infor.mobile:infor-authentication:0.1.6'
 compile 'com.android.support:cardview-v7:25.2.0'
 compile 'com.github.simbiose:Encryption:2.0.1'
 ```
