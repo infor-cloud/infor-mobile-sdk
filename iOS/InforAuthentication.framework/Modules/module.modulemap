@@ -1,6 +1,0 @@
-framework module InforAuthentication {
-  umbrella header "InforAuthentication.h"
-
-  export *
-  module * { export * }
-}
