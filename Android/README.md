@@ -1,6 +1,6 @@
 
 ## InforAuthentication
-inforauthentication is build for Android native applications. This will be useful to authentice using OAuth 2.0 for Infor ION API access.InforAuhtentication.aar
+inforauthentication is build for Android native applications. This will be useful to authentice using OAuth 2.0 for Infor ION API access.
 
 ## Dependency
 
@@ -38,9 +38,7 @@ allprojects {
 b) add the following lines of code in your build.gradle(module level).
 
 ```
-compile 'com.infor.mobile:infor-authentication:0.1.7'
-compile 'com.android.support:cardview-v7:25.2.0'
-compile 'com.github.simbiose:Encryption:2.0.1'
+implementation 'com.infor.mobile:infor-authentication:0.1.15'
 ```
 
 ```
@@ -61,33 +59,33 @@ repositories {
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).configureAuthenticationManager(getApplicationContext(), qrCodeInformation); 
 
 ```
-(or)
-															
-																
+**or**
 ```
-AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).configureAuthenticationManager(getApplicationContext(), hostUrl, clientId, redirectUrl, tenantId, scope, clientSecret);
+AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).configureAuthenticationManager(getApplicationContext(), hostUrl, clientId, redirectUrl, tenantId, scope, clientSecret, vAuthorizedAppVersion);
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).setAuthorizationEndPoints(getApplicationContext(), tokenEndPoint, authEndPoint, revokeEndPoint);
 ```
 
-scope can be empy or nil. example scopes are "openid profile" ,"profile".
+**scope** should be a String Array. You can pass scopes like new String[]{"openid", "profile"}
 Parameters mapping QR code data:
-hostUrl - pu 
-clientId - ci
-clientSecret - cs
-redirectUrl - ru
-tenantId - ti
-There is a property to manage your SSO flow and private session. i.e.privateModeAuthentication
-This should be used if:
-You want start private session(no data to be saved to SSO Data manager or no cookies shares as it will load in internal webview). 
+hostUrl - **pu** 
+clientId - **ci**
+clientSecret - **cs**
+redirectUrl - **ru**
+tenantId - **ti**
+Authorized App Version - **v**.
+
+
+There is a property to manage your SSO flow and private session. i.e. **privateModeAuthentication**.
+This should be used if you want start private session(no data to be saved to SSO Data manager or no cookies shares as it will load in internal webview). 
 Switch account option( if you have one user session with sso and wnat login with other user).
 If you know there is session with server with different tenant, then should user private sssion ot you will find an error.
 
-//If want continue with SSO flow, you dont need to use this property as its default is false. If you want to have private session use this property
+>If want continue with SSO flow, you dont need to use this property as its default is false. If you want to have private session use this property
 ```
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).setPrivateModeAuthentication(getApplicationContext(), true);
 ```
 
-//Note that this property should be configured before calling initiateAuthentication method. if you set it after session created, library won't consider the property value and use the same value you configured(false if didn't configured) before you fire initiateAuthentication method.
+>Note that this property should be configured before calling initiateAuthentication method. if you set it after session created, library won't consider the property value and use the same value you configured(false if didn't configured) before you fire initiateAuthentication method.
 
 ###### 4. Start authentication using below.
 ```
@@ -146,13 +144,13 @@ public void onAuthenticationCancelled(Context context, String errorMessage) {
  // cancelled authentication with error message.
 }
 ```
-
-AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).getAccessTokenFromCode(getApplicationContext(), codeYourecieveFromBrwowser, this);
-
-//onCreate() or onNewIntent() Methods will be called once the app is redirected from the external browser if privateModeAuthentication is disabled. The relevant data comes to these methods in a scheme where you need to get the values and pass the code to InforAuthenticaion in order to get accessToken & refreshToken. 
+>onCreate() or onNewIntent() Methods will be called once the app is redirected from the external browser if privateModeAuthentication is disabled. The relevant data comes to these methods in a scheme where you need to get the values and pass the code to InforAuthenticaion in order to get accessToken & refreshToken. 
+```
+AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext())..getAccessTokenFromSignOnResponse(getApplicationContext(),getIntent().getDataString(), this);
+```
 
 ###### 7. Logging out from session
-//You need to pass the refreshToken that has been saved.
+>You need to pass the refreshToken that has been saved.
 ```
 AuthenticationManager.getAuthenticationManagerInstance(getApplicationContext()).logoutFromCurrentSession(getApplicationContext(), refreshToken, this);
 ```
@@ -212,10 +210,10 @@ public void onError(String errorMessage) {
 ```
 
 How do you get the user name & profile pic for the currently logged in user:
-                You have to make a mingle API calls to get user info and picture once you get token from AS.
-                User details mingle endpoint: Mingle/SocialService.Svc/User/Detail
-                User Picture: Mingle/SocialService.Svc/User/{USER_GUID}/ProfilePhoto?thumbnailType=0
-                You can get USER_GUID in user details response. Both requests needs header “Authorization” = “Bearer <your_token>.
+You have to make a mingle API calls to get user info and picture once you get token from AS.
+- User details mingle endpoint: Mingle/SocialService.Svc/User/Detail
+- User Picture: Mingle/SocialService.Svc/User/{USER_GUID}/ProfilePhoto?thumbnailType=0
+>You can get USER_GUID in user details response. Both requests needs header “Authorization” = “Bearer <your_token>.
 
 ###### 3. Updating user details
 
@@ -227,9 +225,8 @@ SSODataManager.getSSODataManagerInstance(getApplicationContext()).updateUserData
 
 ```
 SSODataManager.getSSODataManagerInstance(getApplicationContext()).getUserDetailsForServer(getApplicationContext(), environmentVariable); 
+//returns jsonObject String
 ```
-
-// returns jsonObject String;
 
 
 Method will return a String that which exactly as like JSONObject. You can get the details as below, 
