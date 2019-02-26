@@ -25,6 +25,8 @@ You can install framework using cocoapods or copying to your project.
 
 `Cocoapods`
 
+Please note that the sdk is disrtibuted to private git and you should be connected to Infor network to pod to add the InforAuthentication sdk to your project.
+
 You can use cocoapods to integrate the InforAuthentication framework into your project like below:
 
 Add Podfile to your project and add this conent:
@@ -50,8 +52,7 @@ Now go to you project folder (open-->Terminal, type this : cd <project folder>).
 Now open xcode project folder and use .xcworkspace to open your project from now.
 
 
-
-Copying Framework file to your project:
+`Copying Framework file to your project`
 
 
 Just copy the framework (InforAuthentication.framework ) file to your project and add to xcode project target. As this is a universal framework, you need to add run script for your app target.
@@ -130,7 +131,7 @@ import InforAuthentication
 Objective C:
 ```
 //Setting your client app details
-[[AuthenticationManager sharedInstance] configureAuthenticationManagerWithHostUrl:<host_url> scope:<prefered_scope> clientId:<app_client_id> clientSecret:<app_client_secret> redirectUrl:<app_redirect_url> tenant:<tenant>];
+[[AuthenticationManager sharedInstance] configureAuthenticationManagerWithHostUrl:<host_url> scopes:[<scope_values>] clientId:<app_client_id> clientSecret:<app_client_secret> redirectUrl:<app_redirect_url> tenant:<tenant>];
 [[AuthenticationManager shareInstance] setAuthorizationServerEndPoints:<endpoints_dictionary>];
 [AuthenticationManager shareInstance].delegate = self;
 [AuthenticationManager sharedInstance].presentingController = <your_view_controller>;
@@ -138,12 +139,12 @@ Objective C:
 Swift:
 ```
 //Setting your client app details
-AuthenticationManager.sharedInstance().configureAuthenticationManager(withHostUrl:<host url>, scope:<your_prefered_scope>, clientId:<app_client_id>, clientSecret:<app_client_secret>, redirectUri:<app_redirect_url>, tenant:<tenant>)
+AuthenticationManager.sharedInstance().configureAuthenticationManager(withHostUrl:<host url>, scopes:[<scope_values>], clientId:<app_client_id>, clientSecret:<app_client_secret>, redirectUri:<app_redirect_url>, tenant:<tenant>)
 AuthenticationManager.sharedInstance().setAuthorizationServerEndPoints(<endpoints_dictionary>)
 AuthenticationManager.sharedInstance().delegate = self
 AuthenticationManager.sharedInstance().presentingController = <your view controller>
 ```
-The scope can be empy or nil. example scopes are "openid profile" ,"profile".
+The scope values can be found in QR code data with key "sc" in newer ION API enviroments. if you are using evironment without new scopes implementation, you can pass empty array.
 
 endpoints_dictionary is dictionary values below format
 ```
@@ -195,7 +196,7 @@ if (url.absoluteString) {
 NSString *stringPath = url.absoluteString;
 NSArray *pathParts =  [stringPath componentsSeparatedByString:[NSString stringWithFormat:@"%@?",[REDIRECT_URL lowercaseString]]];
 if (pathParts.count>1 && ([[pathParts objectAtIndex:1] hasPrefix:@"error"] || [[pathParts objectAtIndex:1] hasPrefix:@"code"])) {
-[[InforOAuth getInforOAuthSharedInstance] handleOpenURL:url];
+[[AuthenticationManager shareInstance] handleOpenURL:url];
 }
 }
 ```
