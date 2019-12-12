@@ -215,6 +215,26 @@ AuthenticationManager.sharedInstance().handleOpen(url);
 return true
 }
 ```
+
+`Note`: This is important for who build their Xcode projects using Xcode 11.2.1 or later ( which have SceneDelegate). Override/add this method in your  SceneDelegate class.
+
+```
+@available(iOS 13.0, *)
+func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    if let firstContext:UIOpenURLContext = URLContexts.first {
+        let url = firstContext.url
+        let stringPath = url.absoluteString
+        var pathParts = stringPath.components(separatedBy: REDIRECT_URL.lowercased() + "?")
+        if pathParts.count < 2 && (stringPath.contains("error=") || stringPath.contains("code=")) {
+            pathParts = stringPath.components(separatedBy: REDIRECT_URL.lowercased()+"/?")
+        }
+        if pathParts.count > 1 && (pathParts[1].hasPrefix("error") || pathParts[1].hasPrefix("code")) {
+            AuthenticationManager.sharedInstance().handleOpen(url);
+        }
+    }
+}
+```
+
 6. Opting for debug logs (you will be able to see logs in xcode debug area. Please make sure you disable this for production build.
 
 Objective C:
